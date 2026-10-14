@@ -1,47 +1,12 @@
 import Link from "next/link";
-
-const PRODUCTS_URL = "https://api.abcz.workers.dev/api/bazardor/products";
-
-const unitLabels = {
-    kg: "প্রতি কেজি",
-    litre: "প্রতি লিটার",
-    dozen: "প্রতি ডজন",
-    piece: "প্রতি পিস",
-};
-
-function toBengaliDigits(value) {
-    return String(value).replace(/\d/g, (digit) => "০১২৩৪৫৬৭৮৯"[digit]);
-}
-
-function formatPrice(value) {
-    return toBengaliDigits(Number(value).toLocaleString("en-US"));
-}
-
-function formatChangeValue(value) {
-    const numericValue = Number(value || 0);
-    return toBengaliDigits(Math.abs(numericValue).toFixed(1));
-}
+import { fetchProducts, formatChangeValue, formatPrice, getUnitLabel } from "@/lib/api";
 
 async function getAllProducts() {
-    const response = await fetch(PRODUCTS_URL, {
-        next: { revalidate: 300 },
-    });
-
-    if (!response.ok) {
+    try {
+        return await fetchProducts();
+    } catch {
         return null;
     }
-
-    const products = await response.json();
-
-    if (!Array.isArray(products)) {
-        return null;
-    }
-
-    return products.slice().sort((first, second) => {
-        const firstName = first?.nameBn || "";
-        const secondName = second?.nameBn || "";
-        return firstName.localeCompare(secondName, "bn");
-    });
 }
 
 const AllProductsSection = async () => {
@@ -49,7 +14,7 @@ const AllProductsSection = async () => {
 
     if (!products) {
         return (
-            <section className="bg-[#f6faf6] px-4 py-12" aria-labelledby="all-products-title">
+            <section id="সব-পণ্য" className="bg-[#f6faf6] px-4 py-12" aria-labelledby="all-products-title">
                 <div className="mx-auto max-w-6xl rounded-2xl border border-red-100 bg-red-50 p-6 text-center text-sm text-red-700">
                     পণ্যের তালিকা এখন পাওয়া যাচ্ছে না। কিছুক্ষণ পর আবার চেষ্টা করুন।
                 </div>
@@ -58,7 +23,7 @@ const AllProductsSection = async () => {
     }
 
     return (
-        <section className="bg-[#f6faf6] px-4 py-12" aria-labelledby="all-products-title">
+        <section id="সব-পণ্য" className="scroll-mt-24 bg-[#f6faf6] px-4 py-12" aria-labelledby="all-products-title">
             <div className="mx-auto max-w-6xl">
                 <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
                     <div>
@@ -77,10 +42,11 @@ const AllProductsSection = async () => {
                 ) : (
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                         {products.map((product) => {
-                            const direction = product?.change?.dir === "down" ? "down" : "up";
+                            const direction = product?.change?.dir;
                             const isDown = direction === "down";
+                            const isFlat = direction === "flat";
                             const changeValue = formatChangeValue(product?.change?.pct);
-                            const unitText = unitLabels[product.unit] || `প্রতি ${product.unit || "কেজি"}`;
+                            const unitText = getUnitLabel(product.unit);
 
                             return (
                                 <Link
@@ -97,12 +63,14 @@ const AllProductsSection = async () => {
                                             </div>
                                             <span
                                                 className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold ${
-                                                    isDown
-                                                        ? "bg-[#fff0f1] text-[#d73b40]"
-                                                        : "bg-[#edf9f0] text-[#1a9d56]"
+                                                    isFlat
+                                                        ? "bg-[#f0f0f0] text-[#888]"
+                                                        : isDown
+                                                            ? "bg-[#ebfff3] text-[#1a9d56]"
+                                                            : "bg-[#fff0f1] text-[#d73b40]"
                                                 }`}
                                             >
-                                                {isDown ? "▼" : "▲"} {changeValue}%
+                                                {isFlat ? "—" : isDown ? "▼" : "▲"} {changeValue}%
                                             </span>
                                         </div>
 

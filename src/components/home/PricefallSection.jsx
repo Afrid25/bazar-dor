@@ -1,41 +1,16 @@
 import Link from "next/link";
-
-const PRODUCTS_URL = "https://api.abcz.workers.dev/api/bazardor/products";
-
-const unitLabels = {
-    kg: "প্রতি কেজি",
-    litre: "প্রতি লিটার",
-    dozen: "প্রতি ডজন",
-    piece: "প্রতি পিস",
-};
-
-function toBengaliDigits(value) {
-    return String(value).replace(/\d/g, (digit) => "০১২৩৪৫৬৭৮৯"[digit]);
-}
-
-function formatPrice(value) {
-    return toBengaliDigits(Number(value).toLocaleString("en-US"));
-}
+import { fetchProducts, formatPrice, getUnitLabel, toBengaliDigits } from "@/lib/api";
 
 async function getFallingProducts() {
-    const response = await fetch(PRODUCTS_URL, {
-        next: { revalidate: 300 },
-    });
-
-    if (!response.ok) {
+    try {
+        const products = await fetchProducts();
+        return products
+            .filter((product) => product?.change?.dir === "down")
+            .sort((first, second) => Number(first.change.pct) - Number(second.change.pct))
+            .slice(0, 6);
+    } catch {
         return null;
     }
-
-    const products = await response.json();
-
-    if (!Array.isArray(products)) {
-        return null;
-    }
-
-    return products
-        .filter((product) => product?.change?.dir === "down")
-        .sort((first, second) => Number(first.change.pct) - Number(second.change.pct))
-        .slice(0, 6);
 }
 
 const PricefallSection = async () => {
@@ -86,7 +61,7 @@ const PricefallSection = async () => {
                                                 {product.nameBn}
                                             </h3>
                                             <p className="mt-1 text-xs text-[#7a857e]">
-                                                {unitLabels[product.unit] || `প্রতি ${product.unit || "কেজি"}`}
+                                                {getUnitLabel(product.unit)}
                                             </p>
                                         </div>
                                     </div>
