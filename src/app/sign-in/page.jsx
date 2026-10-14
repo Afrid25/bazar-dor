@@ -12,6 +12,7 @@ const inputClassName =
 const SignInPage = () => {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [socialProvider, setSocialProvider] = useState(null);
 
     const showSocialError = (error) => {
         if (error) {
@@ -22,6 +23,8 @@ const SignInPage = () => {
     };
 
     const handleSocialLogin = async (provider) => {
+        setSocialProvider(provider);
+
         try {
             const { error } = await authClient.signIn.social({
                 provider,
@@ -30,8 +33,10 @@ const SignInPage = () => {
             showSocialError(error);
         } catch {
             toast.error("সামাজিক লগইন করতে সমস্যা হয়েছে", {
-                description: "দয়া করে আবার চেষ্টা করুন।",
+                description: "সার্ভার বা OAuth কনফিগারেশন পরীক্ষা করে আবার চেষ্টা করুন।",
             });
+        } finally {
+            setSocialProvider(null);
         }
     };
 
@@ -113,10 +118,12 @@ const SignInPage = () => {
                                 key={provider}
                                 type="button"
                                 onClick={() => handleSocialLogin(provider)}
+                                disabled={socialProvider !== null}
                                 className="h-7 rounded-md border border-[#dce4de] bg-white text-[10px] font-semibold text-[#39453d] transition hover:bg-[#f7faf7]"
                             >
-                                {provider === "google" ? "G" : "◉"}{" "}
-                                {provider === "google" ? "Google" : "GitHub"} দিয়ে চালিয়ে যান
+                                {socialProvider === provider
+                                    ? "অপেক্ষা করুন..."
+                                    : `${provider === "google" ? "G Google" : "◉ GitHub"} দিয়ে চালিয়ে যান`}
                             </button>
                         ))}
                     </div>
