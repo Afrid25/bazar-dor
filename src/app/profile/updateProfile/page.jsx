@@ -1,10 +1,10 @@
 import Link from "next/link";
-import AuthGaurd from "@/components/auth/AuthGaurd";
+import AuthGuard from "@/components/auth/AuthGuard";
 import UpdateProfileForm from "@/components/profile/UpdateProfileForm";
 
 const UpdateProfilePage = () => {
     return (
-        <AuthGaurd>
+        <AuthGuard>
             <main className="min-h-[calc(100vh-106px)] bg-[#f1f7f2] px-4 py-10 sm:py-12">
                 <div className="mx-auto w-full max-w-2xl">
                     <header className="mb-6">
@@ -28,7 +28,7 @@ const UpdateProfilePage = () => {
                     <UpdateProfileForm />
                 </div>
             </main>
-        </AuthGaurd>
+        </AuthGuard>
     );
 };
 

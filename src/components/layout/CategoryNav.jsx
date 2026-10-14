@@ -1,18 +1,8 @@
 import Link from "next/link";
+import { fetchCategories } from "@/lib/api";
 
 const CategoryNav = async () => {
-    "use cache";// without this, i got an error: 
-
-    const response = await fetch(
-        "https://api.abcz.workers.dev/api/bazardor/categories",
-        { cache: "force-cache" }
-    );
-
-    if (!response.ok) {
-        throw new Error(`Failed to load categories (${response.status})`);
-    }
-
-    const categories = await response.json();
+    const categories = await fetchCategories();
 
     return (
         <nav aria-label="ক্যাটাগরি">

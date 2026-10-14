@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 
-const AuthGaurd = ({ children, redirectTo = "/sign-in" }) => {
+const AuthGuard = ({ children, redirectTo = "/sign-in" }) => {
     const router = useRouter();
     const { data: session, isPending } = useSession();
 
@@ -29,4 +29,4 @@ const AuthGaurd = ({ children, redirectTo = "/sign-in" }) => {
     return children;
 };
 
-export default AuthGaurd;
+export default AuthGuard;

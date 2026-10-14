@@ -3,6 +3,7 @@ import Link from "next/link";
 import CategoryNav from "./CategoryNav";
 import CurrentDate from "./CurrentDate";
 import NavbarActions from "./NavbarActions";
+import PriceTicker from "./PriceTicker";
 
 const Navbar = () => {
     return (
@@ -21,6 +22,7 @@ const Navbar = () => {
                 </div>
             </div>
             <CategoryNav />
+            <PriceTicker />
         </nav>
     );
 };
