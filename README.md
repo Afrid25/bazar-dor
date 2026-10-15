@@ -53,7 +53,8 @@ src/
 ```
 
 Authentication form logic is kept inside the `/sign-in` and `/sign-up` route
-files. `AuthGuard` is the only reusable authentication component.
+files. Reusable authentication components include `AuthGuard` for protected
+routes and `SocialAuthButtons` for configured OAuth providers.
 
 ## API
 

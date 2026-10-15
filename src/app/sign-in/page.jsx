@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import SocialAuthButtons from "@/components/auth/SocialAuthButtons";
 
 const inputClassName =
     "h-7 w-full rounded-md border border-[#dbe4dd] bg-[#fbfdfb] px-2.5 text-[10px] text-[#27332b] outline-none transition placeholder:text-[#68736b] focus:border-[#008c40] focus:ring-2 focus:ring-[#008c40]/10";
@@ -112,21 +113,11 @@ const SignInPage = () => {
                         <span className="h-px flex-1 bg-[#e1e7e2]" />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-1.5">
-                        {["google", "github"].map((provider) => (
-                            <button
-                                key={provider}
-                                type="button"
-                                onClick={() => handleSocialLogin(provider)}
-                                disabled={socialProvider !== null}
-                                className="h-7 rounded-md border border-[#dce4de] bg-white text-[10px] font-semibold text-[#39453d] transition hover:bg-[#f7faf7]"
-                            >
-                                {socialProvider === provider
-                                    ? "অপেক্ষা করুন..."
-                                    : `${provider === "google" ? "G Google" : "◉ GitHub"} দিয়ে চালিয়ে যান`}
-                            </button>
-                        ))}
-                    </div>
+                    <SocialAuthButtons
+                        actionLabel="চালিয়ে যান"
+                        loadingProvider={socialProvider}
+                        onProviderSelect={handleSocialLogin}
+                    />
 
                     <p className="mt-3 text-center text-[10px] text-[#68736b]">
                         অ্যাকাউন্ট নেই?{" "}

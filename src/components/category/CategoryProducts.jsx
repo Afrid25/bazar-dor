@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import SortDropdown from "./SortDropdown";
+import EmptyCategory from "./EmptyCategory";
 import { toBengaliDigits, formatPrice, formatChangeValue, getUnitLabel } from "@/lib/api";
 
 const CategoryProducts = ({ products }) => {
@@ -15,11 +16,7 @@ const CategoryProducts = ({ products }) => {
   });
 
   if (products.length === 0) {
-    return (
-      <div className="rounded-2xl border border-[#dfe8e1] bg-white p-8 text-center text-sm text-[#6c7871]">
-        এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।
-      </div>
-    );
+    return <EmptyCategory />;
   }
 
   return (

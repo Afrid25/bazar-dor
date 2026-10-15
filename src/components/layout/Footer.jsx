@@ -41,8 +41,9 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-[#2e3e34] pt-6 text-center text-sm text-[#7a917f]">
-          © ২০২৬ বাজার দর। সর্বস্বত্ব সংরক্ষিত।
+        <div className="mt-8 flex flex-col gap-3 border-t border-[#2e3e34] pt-6 text-center text-sm text-[#7a917f] sm:flex-row sm:items-center sm:justify-between sm:text-left">
+          <span>বাজার দর — প্রয়োজনীয় পণ্যের দাম এক নজরে।</span>
+          <span>সকল দাম সম্ভাব্য; বাজার অবস্থার ওপর নির্ভর করে পরিবর্তিত হয়।</span>
         </div>
       </div>
     </footer>

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { fetchCategoryBySlug, fetchProductsByCategory } from "@/lib/api";
+import AuthGuard from "@/components/auth/AuthGuard";
 import CategoryHeader from "@/components/category/CategoryHeader";
 import CategoryProducts from "@/components/category/CategoryProducts";
 
@@ -21,11 +22,13 @@ export default async function CategoryPage({ params }) {
   const products = await fetchProductsByCategory(slug);
 
   return (
-    <main className="min-h-[calc(100vh-160px)] bg-[#f1f7f2] px-4 py-8 sm:py-10">
-      <div className="mx-auto max-w-6xl">
-        <CategoryHeader category={category} />
-        <CategoryProducts products={products} />
-      </div>
-    </main>
+    <AuthGuard>
+      <main className="min-h-[calc(100vh-160px)] bg-[#f1f7f2] px-4 py-8 sm:py-10">
+        <div className="mx-auto max-w-6xl">
+          <CategoryHeader category={category} />
+          <CategoryProducts products={products} />
+        </div>
+      </main>
+    </AuthGuard>
   );
 }
