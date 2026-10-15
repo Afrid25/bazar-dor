@@ -54,7 +54,7 @@ const SignUpPage = () => {
         }
 
         try {
-            const { error } = await authClient.signUp({
+            const { error } = await authClient.signUp.email({
                 name: formData.get("name"),
                 email: formData.get("email"),
                 password,
