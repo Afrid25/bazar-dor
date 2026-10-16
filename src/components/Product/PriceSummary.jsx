@@ -1,11 +1,18 @@
 import { formatPrice, getUnitLabel } from "@/lib/api";
 
 const PriceSummary = ({ product }) => {
+    const marketPrices = (product.markets || [])
+        .flatMap((market) => [Number(market.min), Number(market.max)])
+        .filter(Number.isFinite);
+    const minimum = marketPrices.length ? Math.min(...marketPrices) : product.today;
+    const maximum = marketPrices.length ? Math.max(...marketPrices) : product.today;
+    const average = marketPrices.length
+        ? marketPrices.reduce((total, price) => total + price, 0) / marketPrices.length
+        : product.today;
     const prices = [
-        { label: "আজ", value: product.today },
-        { label: "গতকাল", value: product.yesterday },
-        { label: "গত সপ্তাহ", value: product.lastWeek },
-        { label: "গত মাস", value: product.lastMonth },
+        { label: "সর্বনিম্ন দাম", value: minimum },
+        { label: "সর্বোচ্চ দাম", value: maximum },
+        { label: "গড় দাম", value: Math.round(average) },
     ];
 
     return (
@@ -15,12 +22,12 @@ const PriceSummary = ({ product }) => {
                 <p className="mt-1 text-sm text-[#6c7871]">{getUnitLabel(product.unit)} মূল্য তুলনা</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {prices.map((price, index) => (
                     <div
                         key={price.label}
                         className={`rounded-xl border p-4 ${
-                            index === 0
+                            index === 2
                                 ? "border-[#a9dfba] bg-[#eaf7ed]"
                                 : "border-[#dfe8e1] bg-white"
                         }`}

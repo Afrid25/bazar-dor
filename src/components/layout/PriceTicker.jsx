@@ -10,8 +10,14 @@ const PriceTicker = async () => {
                 <div className="flex items-center gap-3 py-2">
                     {products.map((product) => {
                         const isUp = product.change?.dir === "up";
-                        const changeColor = isUp ? "text-[#d94348]" : "text-[#159657]";
-                        const changeIcon = isUp ? "▲" : "▼";
+                        const isDown = product.change?.dir === "down";
+                        const isFlat = product.change?.dir === "flat";
+                        const changeColor = isFlat
+                            ? "text-[#888]"
+                            : isUp
+                                ? "text-[#d94348]"
+                                : "text-[#159657]";
+                        const changeIcon = isFlat ? "—" : isUp ? "▲" : "▼";
 
                         return (
                             <div

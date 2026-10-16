@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import SocialAuthButtons from "@/components/auth/SocialAuthButtons";
@@ -12,8 +12,17 @@ const inputClassName =
 
 const SignInPage = () => {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [socialProvider, setSocialProvider] = useState(null);
+
+    useEffect(() => {
+        if (searchParams.get("redirected") === "protected") {
+            toast.error("আগে সাইন ইন করুন", {
+                description: "বিস্তারিত তথ্য দেখতে আপনার অ্যাকাউন্টে সাইন ইন করতে হবে।",
+            });
+        }
+    }, [searchParams]);
 
     const showSocialError = (error) => {
         if (error) {

@@ -16,7 +16,17 @@ const ProductSummary = ({ product }) => {
                         <h1 className="mt-1 text-2xl font-extrabold text-[#1f2c24] sm:text-3xl">
                             {product.nameBn}
                         </h1>
-                        <p className="mt-1 text-sm text-[#6c7871]">{getUnitLabel(product.unit)}</p>
+                        <p className="mt-1 text-sm text-[#6c7871]">
+                            বিভিন্ন বাজারে আজকের {getUnitLabel(product.unit)} দামের সংক্ষিপ্তসার
+                        </p>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                            <span className="rounded-full bg-[#edf8f1] px-2.5 py-1 text-xs font-semibold text-[#0b8d46]">
+                                {product.categoryNameBn || "পণ্য"}
+                            </span>
+                            <span className="rounded-full bg-[#f3f5f3] px-2.5 py-1 text-xs font-semibold text-[#68736b]">
+                                {getUnitLabel(product.unit)}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
