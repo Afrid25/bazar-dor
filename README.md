@@ -52,28 +52,16 @@ src/
     └── auth.js
 ```
 
-Authentication form logic is kept inside the `/sign-in` and `/sign-up` route
-files. Reusable authentication components include `AuthGuard` for protected
-routes and `SocialAuthButtons` for configured OAuth providers.
-
-## API
-
-The application uses the official Bazar Dor API:
-
-```text
-https://openapi.programming-hero.com/api/bazardor
-```
-
-API requests and shared formatting helpers are centralized in `src/lib/api.js`.
 
 ## Environment variables
 
-Copy `.env.example` to `.env` and provide real values:
+Create or update `.env` and provide real values:
 
 ```text
 BETTER_AUTH_SECRET=
 BETTER_AUTH_URL=
 BETTER_AUTH_DB_URL=
+MONGODB_DNS_SERVERS=8.8.8.8,1.1.1.1
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GITHUB_CLIENT_ID=
@@ -83,18 +71,8 @@ GITHUB_CLIENT_SECRET=
 Google and GitHub buttons require their corresponding OAuth credentials. Never
 commit `.env` or expose private credentials in client-side code.
 
-## Run locally
+`MONGODB_DNS_SERVERS` is a comma-separated list used for MongoDB Atlas SRV
+lookups when the local Node.js resolver cannot resolve Atlas records. Use a
+resolver available in your deployment environment if the defaults are blocked.
 
-```bash
-npm install
-npm run dev
-```
 
-Open `http://localhost:3000`.
-
-## Validate
-
-```bash
-npm run lint
-npm run build
-```
